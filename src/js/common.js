@@ -75,6 +75,7 @@ $(function() {
 	
 	/**メニューアクションサンプル**/
 	$('.p-footer__menu__icon').on('click',function(e){
+		e.preventDefault();
 		$('.p-footer__menu__icon').removeClass('router-link-active');
 		$(this).addClass('router-link-active');
 	});
@@ -101,6 +102,15 @@ $(function() {
 		});
 	}
 	
+	/**popupサンプル**/
+	$('.is-match').on('click', function(){
+		Swal.fire({
+			title: '<div class="matching"></div>',
+			text: 'おめでとう！',
+			//showConfirmButton: false,
+			confirmButtonText:'とじる',
+		})
+	});
 	
 });
 	

@@ -63,6 +63,14 @@ label.p-form__checkbox__w100 {
     margin-bottom:0;
 }
 
+.p-form__item__range {
+	width:calc(50% - 20px);
+}
+.p-form__item__range--opt {
+	width:40px;
+	text-align:center;
+	font-size:16px;
+}
 
 /**jobsearch**/
 .p-form__jobsearch {
@@ -83,6 +91,14 @@ label.p-form__checkbox__w100 {
 }
 .p-form__jobsearch__item {
     margin-bottom:10px;
+}
+.p-form__item__range {
+	width:calc(50% - 20px);
+}
+.p-form__jobsearch__item__range--opt {
+	width:40px;
+	text-align:center;
+	font-size:16px;
 }
 .p-form__jobsearch__title {
 	font-size:1.5rem;
@@ -270,6 +286,13 @@ label.p-form__checkbox__w100 {
 	margin-bottom:15px;
 	position: relative;
 }
+textarea.p-form__registration__item__textarea {
+	min-height: 4em;
+	min-width: 100%;
+	max-width: 100%;
+	line-height: 1.3;
+	padding:.7em 1em;
+}
 .p-form__registration__item--confirm {
 	background:#EFEFEF;
 	box-sizing:border-box;
@@ -326,6 +349,7 @@ label.p-form__checkbox__w100 {
 	background-image:url(../../../img/icon_eye.svg);
 }
 .p-form__registration__item input,
+.p-form__registration__item textarea,
 .p-form__registration__item select {
 	background-color:#FFFFFF;
 	box-sizing:border-box;

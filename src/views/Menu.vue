@@ -43,7 +43,7 @@
 									<!-- <router-link :to="{ name: 'Message' }" class="p-menu__menus__icon p-menu__menus__icon--message"></router-link> -->
 									
 									<router-link :to="{ name: 'Like', params: { componentName: 'LikeFrom' } }" class="p-menu__menus__icon p-menu__menus__icon--good1"></router-link>
-									
+
 									<router-link :to="{ name: 'Like', params: { componentName: 'LikeTo' }}" class="p-menu__menus__icon p-menu__menus__icon--good2"></router-link>									
 									
 									<!-- <router-link :to="{ name: 'Favorite' }" class="p-menu__menus__icon p-menu__menus__icon--star"></router-link> -->

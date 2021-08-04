@@ -162,6 +162,32 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      console.log("savedPosition")
+      console.log(savedPosition)
+      let resavedPosition  = {x:savedPosition.x, y:savedPosition.y + 600}
+      // window.scrollTo(savedPosition.x,savedPosition.y);
+      console.log(resavedPosition)
+      return resavedPosition
+    } else {
+      console.log("initialPostion") 
+      return { x: 0, y: 0 }
+    }
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     if (savedPosition) {
+    //         console.log("savedPosition")
+    //         console.log(savedPosition)
+    //         // window.scrollTo(savedPosition.x,savedPosition.y);
+    //         resolve(savedPosition)
+    //       } else {
+    //         console.log("initialPostion")
+    //         resolve({ x: 0, y: 0 })
+    //       }
+    //   }, 500)
+    // })
+  },
   routes
 })
 

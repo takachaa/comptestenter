@@ -16,7 +16,9 @@
                             <!-- <div class="u-fixed u-fixed--title">
 								<router-link :to="{ name: 'Top2', params: { value: jobId }}"  class="p-offertitle p-offertitle--good">プロフィール詳細</router-link >
 							</div> -->
-                            <router-link :to="{ name: 'Top2', params: { value: jobId }}" class="p-offertitle">プロフィール詳細</router-link >		
+							
+							<a @click="$router.go(-1)" class="p-offertitle">プロフィール詳細 {{ $route.params.jobOfferId }}</a>
+                            <!-- <router-link :to="{ name: 'Top2', params: { jobOfferId: $route.params.jobOfferId }}" class="p-offertitle">プロフィール詳細 {{ $route.params.jobOfferId }}</router-link >		 -->
 							<!-- <a class="p-offertitle" @click="backTop()">こんな職場です！{{ jobId }} </a> -->
 							
 							<!--job-->
@@ -34,7 +36,7 @@
 
 
 									<swiper :options="swiperTopOptions" ref="swiperTop" class="swiperTop">
-										<swiper-slide v-for="Slide in Slides" :key="Slide.index" >
+										<swiper-slide v-for="Slide in item.slides" :key="Slide.index" >
 											<img :src="Slide[1]" alt="" class="p-offer__thumbnail__img" v-if="Slide[0] == 'img'">
 											<!-- <video width="384" height="141" controls :src="Slide[1]" v-else-if="Slide[0] == 'video'"></video>				 -->
 										</swiper-slide>
@@ -44,7 +46,7 @@
 									</swiper>
 									<!-- swiper2 Thumbs -->
 									<swiper :options="swiperThumbsOptions" ref="swiperThumbs" class="swiperThumbs">
-										<swiper-slide v-for="Slide in Slides" :key="Slide.index">
+										<swiper-slide v-for="Slide in item.slides" :key="Slide.index">
 											<img :src="Slide[1]" alt="" class="p-offer__thumbnail__img" v-if="Slide[0] == 'img'">
 											<!-- <img :src="Slide[2]" alt="" class="p-offer__thumbnail__img" v-else-if="Slide[0] == 'video'"> -->
 											<!-- <video width="96" height="25" controls :src="Slide[1]" v-else-if="Slide[0] == 'video'"></video>	 -->
@@ -57,62 +59,70 @@
 										<div class="p-offer__gallery__img"><img src="../img/thumb_3.png" alt=""></div>
 									</div> -->
 									<span class="p-offer__thumbnail__iconbox p-offer__thumbnail__iconbox--detail u-fbox u-fbox--alstart u-fbox--wauto">
-										<span class="p-offer__thumbnail__iconbox__icon p-offer__thumbnail__iconbox__icon--good"></span>
-										<span class="p-offer__thumbnail__iconbox__icon p-offer__thumbnail__iconbox__icon--favorite"></span>
+										<span class="p-offer__thumbnail__iconbox__icon p-offer__thumbnail__iconbox__icon--good" v-bind:class="{ 'is-active': item.isGoodActive }"></span>
+										<span class="p-offer__thumbnail__iconbox__icon p-offer__thumbnail__iconbox__icon--favorite" v-bind:class="{ 'is-active': item.isStarActive }"></span>
 									</span>
 								</div>
 								<div class="p-offer__cat u-fbox u-fbox--alstart u-fbox--bxstart">
-									<span class="p-offer__cat__icon">未経験</span>
-									<span class="p-offer__cat__icon">若手</span>
-									<span class="p-offer__cat__icon">中堅</span>
-									<span class="p-offer__cat__icon">熟練</span>
+									<span v-for="icon in item.icons" :key="icon.index" class="p-offer__cat__icon">{{icon}}</span>
 								</div>
 								<div class="p-offer__title p-offer__title--member u-fbox u-fbox--alcenter">
-									<h1 class="p-offer__title__title">H・O 32歳（女性）</h1>
-									<span class="p-offer__title__place">福岡県福岡市</span>
+									<h1 class="p-offer__title__title u-fbox u-fbox--wauto">
+										<span class="p-offer__title--name">{{item.name}}</span>
+										<span class="p-offer__title--age">{{item.age}}</span>
+										<span v-if="item.gender == 'men'" class="p-offer__title--gender--men"></span>
+										<span v-if="item.gender == 'women'" class="p-offer__title--gender--women"></span>
+									</h1>
+									<span class="p-offer__title__place">{{item.place}}</span>
 								</div>
-								<p class="p-offer__desc">ネットワークエンジニア、Webエンジニア、プログラマー</p>
+								<p class="p-offer__desc">{{item.desc}}</p>
 								<div class="p-offer__detail p-offer__detail--details">
 									<div class="p-offer__detail__details">
-										<p class="p-offer__detail__details__item">「一日一善」が私の座右の銘です。常に感謝の気持ちを忘れず、誰かのためになることをやりなさいと小さい頃祖母にいわれて育ちました。実際にこの言葉を実行している祖母の背中をみて育ち、私も同じように取り組み続けています。感謝の気持ちを忘れず、他人に奉仕する心を持って、チームのために働きたいと考えています。</p>
+										<p class="p-offer__detail__details__item">{{item.detailText}}</p>
 										<p class="p-offer__detail__details__item">
-											職種：通信業<br>
-											雇用形態：正社員</p>
+											希望職種：<span>{{item.workCategory}}</span><br>
+                                            希望雇用形態：<span>{{item.workType}}</span></p>
 									</div>
-									<h2 class="p-offer__detail__details__title">給食する目的や希望条件</h2>
+									<h2 class="p-offer__detail__details__title">求職する目的や希望条件</h2>
 									<ul class="p-offer__detail__details__list u-fbox u-fbox--alstart u-fbox--bxstart">
-										<li class="p-offer__detail__details__list__item">しっかり固まった業務内容</li>
+										<li v-for="element in item.purposeAndConditions" :key="element.index" class="p-offer__detail__details__list__item">{{element}}</li>
+										<!-- <li class="p-offer__detail__details__list__item">しっかり固まった業務内容</li>
 										<li class="p-offer__detail__details__list__item">シフト制</li>
 										<li class="p-offer__detail__details__list__item">技術力・営業力</li>
-										<li class="p-offer__detail__details__list__item">教育が充実</li>
+										<li class="p-offer__detail__details__list__item">教育が充実</li> -->
 									</ul>
 									<h2 class="p-offer__detail__details__title">性格・仕事への姿勢</h2>
 									<ul class="p-offer__detail__details__list u-fbox u-fbox--alstart u-fbox--bxstart">
-										<li class="p-offer__detail__details__list__item">やる気と勢い</li>
+										<li v-for="element in item.personalityAndAttitude" :key="element.index" class="p-offer__detail__details__list__item">{{element}}</li>
+										<!-- <li class="p-offer__detail__details__list__item">やる気と勢い</li>
 										<li class="p-offer__detail__details__list__item">「まず、やってみよう」の精神</li>
 										<li class="p-offer__detail__details__list__item">フットワークが軽い</li>
 										<li class="p-offer__detail__details__list__item">新しいことが好き</li>
-										<li class="p-offer__detail__details__list__item">突発残業OK</li>
+										<li class="p-offer__detail__details__list__item">突発残業OK</li> -->
 									</ul>
 									<h2 class="p-offer__detail__details__title">学歴</h2>
 									<ul class="p-offer__detail__details__list u-fbox u-fbox--alstart u-fbox--bxstart">
-										<li class="p-offer__detail__details__list__item">福岡大学</li>
-										<li class="p-offer__detail__details__list__item">福岡高校</li>
+										<li v-for="element in item.educationalHistory" :key="element.index" class="p-offer__detail__details__list__item">{{element}}</li>
+										<!-- <li class="p-offer__detail__details__list__item">福岡大学</li>
+										<li class="p-offer__detail__details__list__item">福岡高校</li> -->
 									</ul>
 									<h2 class="p-offer__detail__details__title">職歴</h2>
 									<ul class="p-offer__detail__details__list u-fbox u-fbox--alstart u-fbox--bxstart">
-										<li class="p-offer__detail__details__list__item">○○株式会社</li>
-										<li class="p-offer__detail__details__list__item">○○株式会社</li>
+										<li v-for="element in item.workHistory" :key="element.index" class="p-offer__detail__details__list__item">{{element}}</li>
+										<!-- <li class="p-offer__detail__details__list__item">○○株式会社</li>
+										<li class="p-offer__detail__details__list__item">○○株式会社</li> -->
 									</ul>
 									<h2 class="p-offer__detail__details__title">言語</h2>
 									<ul class="p-offer__detail__details__list u-fbox u-fbox--alstart u-fbox--bxstart">
-										<li class="p-offer__detail__details__list__item">日本語</li>
-										<li class="p-offer__detail__details__list__item">英語</li>
+										<li v-for="element in item.languages" :key="element.index" class="p-offer__detail__details__list__item">{{element}}</li>
+										<!-- <li class="p-offer__detail__details__list__item">日本語</li>
+										<li class="p-offer__detail__details__list__item">英語</li> -->
 									</ul>
 									<h2 class="p-offer__detail__details__title">スキル</h2>
 									<ul class="p-offer__detail__details__list u-fbox u-fbox--alstart u-fbox--bxstart">
-										<li class="p-offer__detail__details__list__item">プログラム</li>
-										<li class="p-offer__detail__details__list__item">インフラエンジニア</li>
+										<li v-for="element in item.skills" :key="element.index" class="p-offer__detail__details__list__item">{{element}}</li>
+										<!-- <li class="p-offer__detail__details__list__item">プログラム</li>
+										<li class="p-offer__detail__details__list__item">インフラエンジニア</li> -->
 									</ul>
 								</div>
 							</div>
@@ -135,6 +145,7 @@
 
 <script>
 import $ from 'jquery'
+import SelectJobOffer from '../components/SelectJobOffer'
 
 export default {
   name: 'Top3Detail',
@@ -142,13 +153,13 @@ export default {
 	return {
 		jobId : '',
 		// Slides: ["/img/img_company01.png","/img/img_company01.png","/img/img_company01.png","/img/img_company01.png"],
-		Slides:[
-			['img', require('@/img/img_member01.png')],
-			['img', require('@/img/img_member01.png')],
-			['img', require('@/img/img_member01.png')],
-			// ['video', "https://res.cloudinary.com/code-kitchen/video/upload/v1555082747/movie.mp4", require('@/img/img_company03.png')],
+		// Slides:[
+		// 	['img', require('@/img/img_member01.png')],
+		// 	['img', require('@/img/img_member01.png')],
+		// 	['img', require('@/img/img_member01.png')],
+		// 	// ['video', "https://res.cloudinary.com/code-kitchen/video/upload/v1555082747/movie.mp4", require('@/img/img_company03.png')],
 
-		],			
+		// ],			
 		swiperTopOptions: {
 			effect: 'fade',
 			loop: true,
@@ -171,9 +182,14 @@ export default {
 		
 	}
   },
-  computed: {
-		
-	},
+  computed:{
+    item(){
+        return this.$store.state.items.find(item => item.jobOfferId == this.$route.params.jobOfferId)
+    },
+	// itemIndex(){
+	// 	return this.$store.state.items.findIndex(item => item.jobOfferId == this.$route.params.jobOfferId)
+    // }
+  },
   created(){
 	
   },
@@ -206,20 +222,31 @@ export default {
 	$('.p-offer__thumbnail__iconbox__icon--good').on('click', function(){
 		
 		if ($(this).hasClass('is-active')) {
-			that.toast('「いいね！」を解除しました。');
-			$(this).removeClass('is-active');
+			// that.toast('「いいね！」を解除しました。');
+			// $(this).removeClass('is-active');
 		} else {
-			$(this).addClass('is-active');
-			that.toast('「いいね！」を登録しました。');
+			// that.showSelectJobOffer('good');
+			// $(this).addClass('is-active');
+			// that.toast('「いいね！」を登録しました。');
+			that.showSelectJobOffer();
 		}		
 	});
 
 	$('.p-offer__thumbnail__iconbox__icon--favorite').on('click', function(){
 		if ($(this).hasClass('is-active')) {
-			$(this).removeClass('is-active');
+			// $(this).removeClass('is-active');
+			// that.$store.dispatch("updateStarActiveinItems", { index: that.itemIndex, value: false })
+			that.$store.dispatch("updateStarActiveinItems", { jobOfferId: that.$route.params.jobOfferId, value: false })
+			that.$store.dispatch("removeFarvoriteItems", that.$route.params.jobOfferId)
+
 			that.toast('「お気に入り」を解除しました。');
 		} else {
-			$(this).addClass('is-active');
+			// that.showSelectJobOffer('star');
+			// $(this).addClass('is-active');
+
+			// that.$store.dispatch("updateStarActiveinItems", { index: that.itemIndex, value: true })
+			that.$store.dispatch("updateStarActiveinItems", { jobOfferId: that.$route.params.jobOfferId, value: true })
+			that.$store.dispatch("addFarvoriteItems", that.item)
 			that.toast('「お気に入り」を登録しました。');
 		}		
 	});
@@ -235,6 +262,15 @@ export default {
 			fullWidth:true,
 			fitToScreen:true,
 			className: ['toasting']
+			}
+		)
+	},
+	showSelectJobOffer() {
+
+		this.$FModal.show(
+			{ component: SelectJobOffer },
+			{
+				jobOfferId : this.$route.params.jobOfferId
 			}
 		)
 	}
